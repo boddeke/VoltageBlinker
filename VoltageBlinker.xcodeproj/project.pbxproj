@@ -6,10 +6,27 @@
 	objectVersion = 55;
 	objects = {
 
+/* Begin PBXFileReference section */
+		01D8E03A28B4D3A900B26C29 /* uart.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = uart.c; sourceTree = "<group>"; };
+		01D8E03B28B4D3A900B26C29 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		01D8E03C28B4D3A900B26C29 /* board.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = board.h; sourceTree = "<group>"; };
+		01D8E03D28B4D3A900B26C29 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		01D8E03E28B4D3A900B26C29 /* board.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = board.c; sourceTree = "<group>"; };
+		01D8E03F28B4D3A900B26C29 /* uart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uart.h; sourceTree = "<group>"; };
+		01D8E04028B4D3A900B26C29 /* avrdude.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = avrdude.conf; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
 		01D8E02E28B4D36B00B26C29 = {
 			isa = PBXGroup;
 			children = (
+				01D8E04028B4D3A900B26C29 /* avrdude.conf */,
+				01D8E03E28B4D3A900B26C29 /* board.c */,
+				01D8E03C28B4D3A900B26C29 /* board.h */,
+				01D8E03B28B4D3A900B26C29 /* main.c */,
+				01D8E03D28B4D3A900B26C29 /* Makefile */,
+				01D8E03A28B4D3A900B26C29 /* uart.c */,
+				01D8E03F28B4D3A900B26C29 /* uart.h */,
 			);
 			sourceTree = "<group>";
 		};
