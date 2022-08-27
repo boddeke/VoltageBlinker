@@ -10,24 +10,28 @@
 #include "board.h"
 #include "uart.h"
 
+
 int main(void) {
     
-    char str[10];
-    
+    // initialize board stuff
     board_init();
     
+    // initialize uart
     uart_init();
 
+    // say hello
     uart_tx_str("\r\n\r\nvoltage blinker:\r\n");
 
+    // forever
     while(1) {
 
+        // new voltage measurement
         if(new_value_signal) {
         
             new_value_signal = 0;
             
-            sprintf(str,"%d.%dv\r\n",blink_1,blink_2);
-            uart_tx_str(str);
+            // dump value over uart
+            board_dump_voltage();
         }
     }
 }

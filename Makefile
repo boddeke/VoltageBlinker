@@ -1,6 +1,3 @@
-ARCH := $(shell uname)
-USER := $(shell whoami)
-
 PATH_TOOLCHAIN = /Users/frank/Projects/atmega328pb/avr8-gnu-toolchain-darwin_x86_64/bin
 PATH_PACK      = /Users/frank/Projects/atmega328pb/Atmel.ATmega_DFP.1.2.209
 AVRDUDE_EXEC   = /Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude
@@ -26,8 +23,6 @@ PROGRAMMER = USBasp
 # efuse: 11111111 0xff (default)
 # hfuse: 11011111 0xdf (default)
 # lfuse: 01100010 0x62 = 8 mhz/8 (default)
-# lfuse: 11100010 0xe2 = 8 mhz/1
-
 
 DEVICE    = attiny45
 OBJECTS   = main.o board.o uart.o
@@ -44,7 +39,6 @@ AVRDUDE   = $(AVRDUDE_EXEC) -c $(PROGRAMMER) -C avrdude.conf -p $(DEVICE)
 COMPILE = $(PATH_TOOLCHAIN)/avr-gcc -Wall -DF_CPU=$(CLOCK) -mmcu=$(DEVICE) -B $(PATH_PACK)/gcc/dev/attiny84/ -I $(PATH_PACK)/include/
 OBJDUMP = $(PATH_TOOLCHAIN)/avr-objdump
 OBJCOPY = $(PATH_TOOLCHAIN)/avr-objcopy
-
 
 all:	main.hex main.lss                                        
 

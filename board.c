@@ -12,86 +12,115 @@
 #include "board.h"
 #include "uart.h"
 
-#define blink_p 2
-#define blink_w 20
+// "formating"
+#define DECIMALPOINT_WAIT           2
+#define INBETWEEN_WAIT             20
 
-volatile unsigned char blink_1;
-volatile unsigned char blink_2;
-volatile unsigned char blink_state;
-volatile unsigned char blink_copy;
+volatile unsigned char volt;
+volatile unsigned char deci_volt;
+volatile unsigned char state;
+volatile unsigned char copy;
 volatile unsigned char new_value_signal;
 
+// states
+#define STATE_BLINK_VOLT            0
+#define STATE_DECIMAL_POINT         1
+#define STATE_BLINK_DECIVOLT        2
+#define STATE_WAIT                  3
 
 // timer1 compare A match interrupt
-
 ISR(TIMER1_COMPA_vect) {
     
-    switch(blink_state) {
+    switch(state) {
             
-        case 0:
-            // blink_1
+        case STATE_BLINK_VOLT:
+            
+            // turn led on (is turned off in COMPB)
             PORTB |= (1<<PB4);
-            blink_copy--;
-            if(blink_copy==0) {
-                blink_state = 1;
-                blink_copy = blink_p;
+            
+            copy--;
+            if(copy==0) {
+                // done, next state
+                state = STATE_DECIMAL_POINT;
+                copy = DECIMALPOINT_WAIT;
             }
+            
             break;
             
-        case 1:
-            // "point"
-            blink_copy--;
-            if(blink_copy==0) {
-                if(blink_2==0) {
-                    blink_state = 3;
-                    blink_copy = blink_w;
+        case STATE_DECIMAL_POINT:
+            
+            // just wait
+            copy--;
+            if(copy==0) {
+                // done, next state
+                if(deci_volt==0) {
+                    // exception: deci_volt = 0 --> skip that state
+                    state = STATE_WAIT;
+                    copy = INBETWEEN_WAIT;
                 } else {
-                    blink_state = 2;
-                    blink_copy = blink_2;
+                    state = STATE_BLINK_DECIVOLT;
+                    copy = deci_volt;
                 }
             }
+            
             break;
             
-        case 2:
-            // blink_2
+        case STATE_BLINK_DECIVOLT:
+            
+            // turn led on (is turned off in COMPB)
             PORTB |= (1<<PB4);
-            blink_copy--;
-            if(blink_copy==0) {
-                blink_state = 3;
-                blink_copy = blink_w;
+            
+            copy--;
+            if(copy==0) {
+                // done, next state
+                state = STATE_WAIT;
+                copy = INBETWEEN_WAIT;
             }
+            
             break;
             
-        case 3:
-            // delay
-            blink_copy--;
-            if(blink_copy==0) {
-                blink_state = 0;
-                blink_copy = blink_1;
+        case STATE_WAIT:
+            
+            copy--;
+            if(copy==0) {
+                // done, next state
+                state = STATE_BLINK_VOLT;
+                copy = volt;
             }
-            if(blink_copy==1) {
+            
+            if(copy==1) {
+                
+                // start adc conversion somewhere during the wait, close to the end
                 ADCSRA |= (1<<ADSC); // Start conversion
             }
+            
             break;
     }
 }
 
+// turn off led
 ISR(TIMER1_COMPB_vect) {
+    
     PORTB &= ~(1<<PB4);
 }
 
+// conversion complete
 ISR(ADC_vect) {
     
-    unsigned int deci_volt = 1023*1.1*10/ADC;
-    unsigned int volt = deci_volt/10;
-    deci_volt -= volt * 10;
+    // adc is setup to measure internal 1.1 reference voltage with vcc as reference
+    // adc is 10-bit (0 - 1023) and lets keep 1 digit behind the decimal point
+    unsigned int voltx10 = 1023*1.1*10/ADC;
     
-    blink_1 = volt;
-    blink_2 = deci_volt;
+    // volt
+    volt = voltx10/10;
+    // digit after the decimal point
+    deci_volt = voltx10 - volt * 10;
     
+    // indicate new values
     new_value_signal = 1;
 }
 
+// board and micro initialization
 void board_init(void) {
     
     // Disable interrupts
@@ -123,11 +152,11 @@ void board_init(void) {
     PORTB |= (1<<PB4);
     DDRB |= (1<<PB4);
     
-    // BLinker
-    blink_state = 0;
-    blink_copy = 1;
-    blink_1 = 1;
-    blink_2 = 1;
+    // Blinker
+    state = STATE_WAIT;
+    copy = INBETWEEN_WAIT;
+    volt = 1;
+    deci_volt = 0;
     new_value_signal = 0;
     
     // ADC
@@ -137,4 +166,12 @@ void board_init(void) {
     
     // Enable interrupts
     sei();
+}
+
+void board_dump_voltage() {
+    
+    char str[10];
+    
+    sprintf(str,"%d.%dv\r\n",(int)volt,(int)deci_volt);
+    uart_tx_str(str);
 }

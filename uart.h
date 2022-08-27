@@ -4,11 +4,8 @@
 //
 //  Created by Frank Boddeke on 20220826.
 //
-
 #ifndef uart_h
 #define uart_h
-
-extern volatile unsigned short tx_shift_reg;
 
 void uart_init(void);
 void uart_tx_str(char* string);
