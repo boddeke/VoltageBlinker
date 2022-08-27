@@ -14,15 +14,15 @@
 		01D8E03E28B4D3A900B26C29 /* board.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = board.c; sourceTree = "<group>"; };
 		01D8E03F28B4D3A900B26C29 /* uart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uart.h; sourceTree = "<group>"; };
 		01D8E04028B4D3A900B26C29 /* avrdude.conf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = avrdude.conf; sourceTree = "<group>"; };
-		01D8E04228BA303400B26C29 /* voltage-blinker.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "voltage-blinker.jpg"; path = "images/voltage-blinker.jpg"; sourceTree = "<group>"; };
 		01D8E04328BA304900B26C29 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		01D8E04628BA339B00B26C29 /* voltage-blinker.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "voltage-blinker.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		01D8E02E28B4D36B00B26C29 = {
 			isa = PBXGroup;
 			children = (
-				01D8E04228BA303400B26C29 /* voltage-blinker.jpg */,
+				01D8E04628BA339B00B26C29 /* voltage-blinker.jpg */,
 				01D8E04328BA304900B26C29 /* README.md */,
 				01D8E04028B4D3A900B26C29 /* avrdude.conf */,
 				01D8E03E28B4D3A900B26C29 /* board.c */,
